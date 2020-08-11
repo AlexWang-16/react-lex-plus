@@ -4,10 +4,7 @@ ReactJS AWS Lex Chat Component with additional features. Based on [React-Lex pro
 
 ## Additional Features
 
-- [x] Ability to customize header background color
-- [x] Ability to customize header font size
-- [x] Ability to customize header font color
-- [x] Ability to customize header top and bottom padding
+- [x] Ability to customize header styling using inline CSS
 - [x] Ability to customize lexUserId
 - [x] Ability to customize initial greeting message
 
@@ -32,7 +29,18 @@ npm install --save react-lex-plus
 
 ## Using the Component
 
-Example:
+The LexChat component has the following props available to you
+
+- botName (required - String) - The name of the bot as configured in AWS Lex
+- IdentityPoolId (required - String) - The cognito identity pool Id as configured in AWS cognito for the bot
+- placeholder (optional - String) - The placeholder text in the input textfield in the chat UI
+- backgroundColor (optional - String) - The background color of the conversation portion of chat UI
+- height (optional - string) - The height of the chat UI
+- region (optional - string) - The AWS region of AWS Lex used (defaults to us-east-1 if not provided)
+- headerText (optional - string) - The text that shows up in the header
+- headerStyle (optional - object) - An object that takes CSS styles to be applied to the header
+
+### Example
 
 ```js
 import LexChat from "react-lex";
@@ -48,6 +56,7 @@ class App extends Component {
       height="430px"
       region="us-east-1"
       headerText="Chat with our awesome bot"
+      headerStyle={{ backgroundColor: "#ABD5D9", fontSize: "30px" }}
     />;
   }
 }
