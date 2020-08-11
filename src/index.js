@@ -152,7 +152,7 @@ class LexChat extends React.Component {
       textAlign: "center",
       paddingTop: 12,
       paddingBottom: -12,
-      color: "#FFFFFF",
+      color: this.props.headerColor || "#FFFFFF",
       fontSize: this.props.headerFontSize || "24px",
     };
 
@@ -214,6 +214,7 @@ LexChat.propTypes = {
   backgroundColor: PropTypes.string,
   height: PropTypes.number,
   headerText: PropTypes.string,
+  headerColor: PropTypes.string,
   headerBackgroundColor: PropTypes.string,
   headerFontSize: PropTypes.number,
 };
