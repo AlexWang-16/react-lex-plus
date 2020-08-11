@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import _ from "lodash";
 import "aws-sdk";
 import "./styles/chatbot.css";
 
@@ -12,12 +13,23 @@ class LexChat extends React.Component {
       sessionAttributes: {},
       visible: "closed",
     };
+    this.conversationDivRef = React.createRef();
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
     document.getElementById("inputField").focus();
+
+    const greetingNode = document.createElement("P");
+    greetingNode.className = "lexResponse";
+    greetingNode.appendChild(document.createTextNode(this.props.greeting));
+    greetingNode.appendChild(document.createElement("br"));
+
+    if (this.props.greeting) {
+      this.conversationDivRef.current.appendChild(greetingNode);
+    }
+
     AWS.config.region = this.props.region || "us-east-1";
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
       IdentityPoolId: this.props.IdentityPoolId,
@@ -145,16 +157,21 @@ class LexChat extends React.Component {
       borderBottom: "thin ridge #bfbfbf",
     };
 
-    const headerRectStyle = {
-      backgroundColor: this.props.headerBackgroundColor || "#000000",
+    const defaultHeaderRectStyle = {
+      backgroundColor: "#000000",
       width: "408px",
       height: "40px",
       textAlign: "center",
       paddingTop: 12,
       paddingBottom: -12,
-      color: this.props.headerColor || "#FFFFFF",
-      fontSize: this.props.headerFontSize || "24px",
+      color: "#FFFFFF",
+      fontSize: "24px",
     };
+
+    const headerReactStyle = _.merge(
+      this.props.headerstyle,
+      defaultHeaderRectStyle
+    );
 
     const chatcontainerStyle = {
       backgroundColor: "#FFFFFF",
@@ -185,7 +202,11 @@ class LexChat extends React.Component {
           className={this.state.visible}
           style={chatcontainerStyle}
         >
-          <div id="conversation" style={conversationStyle}></div>
+          <div
+            id="conversation"
+            ref={conversationDivRef}
+            style={conversationStyle}
+          />
           <form
             id="chatform"
             style={chatFormStyle}
@@ -217,6 +238,11 @@ LexChat.propTypes = {
   headerColor: PropTypes.string,
   headerBackgroundColor: PropTypes.string,
   headerFontSize: PropTypes.number,
+};
+
+LexChat.defaultProps = {
+  headerStyle: {},
+  greeting: "",
 };
 
 export default LexChat;

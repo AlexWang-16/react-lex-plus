@@ -39,6 +39,7 @@ The LexChat component has the following props available to you
 - region (optional - string) - The AWS region of AWS Lex used (defaults to us-east-1 if not provided)
 - headerText (optional - string) - The text that shows up in the header
 - headerStyle (optional - object) - An object that takes CSS styles to be applied to the header
+- greeting (optional - string) - The initial message the bot sends to the user
 
 ### Example
 
@@ -57,6 +58,9 @@ class App extends Component {
       region="us-east-1"
       headerText="Chat with our awesome bot"
       headerStyle={{ backgroundColor: "#ABD5D9", fontSize: "30px" }}
+      greeting={
+        "Hello, how can I help? You can say things like 'help' to get more info"
+      }
     />;
   }
 }
