@@ -42,7 +42,7 @@ The LexChat component has the following props available to you
 ### Example
 
 ```js
-import LexChat from "react-lex";
+import LexChat from "react-lex-plus";
 
 class App extends Component {
   render() {
