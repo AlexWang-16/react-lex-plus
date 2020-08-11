@@ -187,7 +187,7 @@ class LexChat extends React.Component {
       <div id="chatwrapper">
         <div
           id="chat-header-rect"
-          style={headerRectStyle}
+          style={headerReactStyle}
           onClick={this.handleClick}
         >
           {this.props.headerText}
