@@ -41401,12 +41401,15 @@ var LexChat = function (_React$Component) {
       var defaultHeaderRectStyle = {
         backgroundColor: "#000000",
         width: "408px",
-        height: "40px",
+        minHeight: "40px",
         textAlign: "center",
         paddingTop: 12,
         paddingBottom: -12,
+        display: "flex",
+        alignItems: "center",
         color: "#FFFFFF",
-        fontSize: "24px"
+        fontSize: "24px",
+        justifyContent: "space-between"
       };
 
       var headerReactStyle = _lodash2.default.merge(defaultHeaderRectStyle, this.props.headerStyle);
@@ -41431,7 +41434,17 @@ var LexChat = function (_React$Component) {
             style: headerReactStyle,
             onClick: this.handleClick
           },
-          this.props.headerText,
+          _react2.default.createElement("span", null),
+          _react2.default.createElement(
+            "span",
+            {
+              style: {
+                fontSize: headerReactStyle.fontSize,
+                color: headerReactStyle.color
+              }
+            },
+            this.props.headerText
+          ),
           this.state.visible === "open" ? _react2.default.createElement("span", { className: "chevron top" }) : _react2.default.createElement("span", { className: "chevron bottom" })
         ),
         _react2.default.createElement(
@@ -41658,7 +41671,7 @@ exports = module.exports = __webpack_require__(430)(false);
 
 
 // module
-exports.push([module.i, "input::placeholder {\n\tcolor: #ccc;\n\tfont-style: italic;\n}\n\np.userRequest {\n\tmargin: 8px;\n\tpadding: 8px 14px 8px 14px;\n\tborder-radius: 4px;\n\tmin-width: 50%;\n\tmax-width: 85%;\n\tfloat: left;\n\tcolor: #000000;\n\tbackground-color: #e5e5ea;\n\tborder-radius: 1em;\n\tfont: 20px \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n}\n\np.lexResponse {\n\tmargin: 10px;\n\tpadding: 8px 14px 8px 14px;\n\tborder-radius: 4px;\n\ttext-align: right;\n\tmin-width: 50%;\n\tmax-width: 85%;\n\tfloat: right;\n\tcolor: #FFFFFF;\n\tbackground-color: #1289fe;\n\tfont-style: italic;\n\tborder-radius: 1em;\n\tfont: 20px \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n}\n\np.lexError {\n\tmargin: px;\n\tpadding: 4px 10px 4px 10px;\n\tborder-radius: 4px;\n\ttext-align: right;\n\tmin-width: 50%;\n\tmax-width: 85%;\n\tfloat: right;\n\tcolor: #FFFFFF;\n\tbackground-color: #ff0000;\n\tborder-radius: 1em;\n\tfont: 20px \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n}\n\n.closed {\n    width: 400px;\n    margin-top: 0px;\n    max-height: 0px;\n    overflow: hidden;\n    transition: .3s cubic-bezier(.3, 0, 0, 1.3);\n\n}\n.open {\n  max-height:1000px;\n}\n\n#chatwrapper {\n\tbottom: 0;\n\tfont-size: 12px;\n\tright: 24px;\n\tposition: fixed;\n\twidth: 400px;\n\tpadding-bottom: 1px;\n}\n\n.chevron::before {\n\tborder-style: solid;\n\tborder-width: 4px 4px 0 0;\n\tcontent: '';\n\tdisplay: inline-block;\n\theight: 7px;\n\tleft: 2px;\n\tposition: relative;\n\ttop: 10px;\n\ttransform: rotate(-45deg);\n\tvertical-align: top;\n\twidth: 15px;\n\theight: 15px;\n\tfloat: right;\n\tmargin-right: 24px;\n}\n\n.chevron.bottom:before {\n\ttransform: rotate(135deg);\n\twidth: 15px;\n\theight: 15px;\n\tfloat: right;\n\tmargin-top: -10px;\n}\n\n\n\n\n", ""]);
+exports.push([module.i, "input::placeholder {\n  color: #ccc;\n  font-style: italic;\n}\n\np.userRequest {\n  margin: 10px;\n  padding: 8px 13px 8px 14px;\n  border-radius: 4px;\n  min-width: 10%;\n  max-width: 85%;\n  float: left;\n  color: #ffffff;\n  background-color: #1289fe;\n  border-radius: 1em;\n  font: 20px \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n}\n\np.lexResponse {\n  margin: 10px;\n  padding: 8px 13px 8px 14px;\n  border-radius: 4px;\n  text-align: left;\n  min-width: 10%;\n  max-width: 85%;\n  float: right;\n  color: #000000;\n  background-color: #e5e5ea;\n  font-style: italic;\n  border-radius: 1em;\n  font: 20px \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n}\n\np.lexError {\n  margin: 10px;\n  padding: 4px 14px 4px 14px;\n  border-radius: 4px;\n  text-align: right;\n  min-width: 50%;\n  max-width: 85%;\n  float: right;\n  color: #ffffff;\n  background-color: #ff0000;\n  border-radius: 1em;\n  font: 20px \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n}\n\n.closed {\n  width: 400px;\n  margin-top: 0px;\n  max-height: 0px;\n  overflow: hidden;\n  transition: 0.3s cubic-bezier(0.3, 0, 0, 1.3);\n}\n.open {\n  max-height: 1000px;\n}\n\n#chatwrapper {\n  bottom: 0;\n  font-size: 12px;\n  right: 24px;\n  position: fixed;\n  width: 400px;\n  padding-bottom: 1px;\n}\n\n.chevron::before {\n  border-style: solid;\n  border-width: 4px 4px 0 0;\n  content: \"\";\n  display: inline-block;\n  height: 7px;\n  left: 2px;\n  position: relative;\n  top: 10px;\n  transform: translateY(35%) rotate(-45deg);\n  vertical-align: top;\n  width: 15px;\n  height: 15px;\n  margin-right: 24px;\n}\n\n.chevron.bottom:before {\n  transform: translateY(-18%) rotate(135deg);\n  width: 15px;\n  height: 15px;\n  /* margin-top: -10px; */\n}\n", ""]);
 
 // exports
 

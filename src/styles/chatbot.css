@@ -74,18 +74,16 @@ p.lexError {
   left: 2px;
   position: relative;
   top: 10px;
-  transform: rotate(-45deg);
+  transform: translateY(35%) rotate(-45deg);
   vertical-align: top;
   width: 15px;
   height: 15px;
-  float: right;
   margin-right: 24px;
 }
 
 .chevron.bottom:before {
-  transform: rotate(135deg);
+  transform: translateY(-18%) rotate(135deg);
   width: 15px;
   height: 15px;
-  float: right;
-  margin-top: -10px;
+  /* margin-top: -10px; */
 }

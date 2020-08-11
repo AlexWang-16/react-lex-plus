@@ -160,12 +160,15 @@ class LexChat extends React.Component {
     const defaultHeaderRectStyle = {
       backgroundColor: "#000000",
       width: "408px",
-      height: "40px",
+      minHeight: "40px",
       textAlign: "center",
       paddingTop: 12,
       paddingBottom: -12,
+      display: "flex",
+      alignItems: "center",
       color: "#FFFFFF",
       fontSize: "24px",
+      justifyContent: "space-between",
     };
 
     const headerReactStyle = _.merge(
@@ -190,7 +193,16 @@ class LexChat extends React.Component {
           style={headerReactStyle}
           onClick={this.handleClick}
         >
-          {this.props.headerText}
+          <span />
+          <span
+            style={{
+              fontSize: headerReactStyle.fontSize,
+              color: headerReactStyle.color,
+            }}
+          >
+            {this.props.headerText}
+          </span>
+
           {this.state.visible === "open" ? (
             <span className="chevron top"></span>
           ) : (
