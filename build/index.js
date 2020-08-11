@@ -41443,7 +41443,7 @@ var LexChat = function (_React$Component) {
           },
           _react2.default.createElement("div", {
             id: "conversation",
-            ref: conversationDivRef,
+            ref: this.conversationDivRef,
             style: conversationStyle
           }),
           _react2.default.createElement(
