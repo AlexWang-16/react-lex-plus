@@ -204,7 +204,7 @@ class LexChat extends React.Component {
         >
           <div
             id="conversation"
-            ref={conversationDivRef}
+            ref={this.conversationDivRef}
             style={conversationStyle}
           />
           <form
