@@ -6,8 +6,9 @@ ReactJS AWS Lex Chat Component with additional features. Based on [React-Lex pro
 ## Additional Features
 
 - [x] Ability to customize header styling using inline CSS
-- [x] Ability to customize lexUserId
+- [] Ability to customize lexUserId
 - [x] Ability to customize initial greeting message
+- [x] Plays nicely with Bootstrap
 
 ## Demo
 
