@@ -1,6 +1,6 @@
 {
-  "name": "react-lex",
-  "version": "1.2.0",
+  "name": "react-lex-plus",
+  "version": "1.0.0",
   "description": "Reactjs AWS Lex client",
   "main": "build/index.js",
   "peerDependencies": {
@@ -19,10 +19,7 @@
     "start": "webpack --watch",
     "build": "webpack"
   },
-  "author": {
-    "name": "avi wilensky",
-    "email": "avi@promediacorp.com"
-  },
+  "author": "Alex Wang <experimentalists.2018@gmail.com>",
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
@@ -30,5 +27,20 @@
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.5.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexWang-16/react-lex-plus.git"
+  },
+  "keywords": [
+    "aws",
+    "lex",
+    "react",
+    "chat"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AlexWang-16/react-lex-plus/issues"
+  },
+  "homepage": "https://github.com/AlexWang-16/react-lex-plus#readme"
 }
