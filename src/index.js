@@ -163,7 +163,7 @@ class LexChat extends React.Component {
       minHeight: "40px",
       textAlign: "center",
       paddingTop: 12,
-      paddingBottom: -12,
+      paddingBottom: 12,
       display: "flex",
       alignItems: "center",
       color: "#FFFFFF",
