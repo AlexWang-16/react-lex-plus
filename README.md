@@ -1,6 +1,7 @@
 # react-lex-plus
 
-ReactJS AWS Lex Chat Component with additional features. Based on [React-Lex project](https://github.com/promediacorp/react-lex).
+ReactJS AWS Lex Chat Component with additional features. Based on [React-Lex project](https://github.com/promediacorp/react-lex). Credits go to the original authors
+[promediacorp](https://github.com/promediacorp/) and [Alex Baranov](https://github.com/ab320012). My work builds on top of the work these giants have contributed.
 
 ## Additional Features
 
@@ -10,10 +11,7 @@ ReactJS AWS Lex Chat Component with additional features. Based on [React-Lex pro
 
 ## Demo
 
-[http://react-lex.s3-website-us-east-1.amazonaws.com/
-](http://react-lex.s3-website-us-east-1.amazonaws.com/)
-
-<img src="https://thumbs.gfycat.com/ShabbyCourageousFalcon-size_restricted.gif" width="50%">
+![chat UI Demo](chatbot_demo.gif)
 
 ## Prerequisites
 
