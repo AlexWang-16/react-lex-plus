@@ -41428,7 +41428,7 @@ var LexChat = function (_React$Component) {
           "div",
           {
             id: "chat-header-rect",
-            style: headerRectStyle,
+            style: headerReactStyle,
             onClick: this.handleClick
           },
           this.props.headerText,
