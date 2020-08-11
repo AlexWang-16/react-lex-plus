@@ -4,13 +4,13 @@
   "description": "Reactjs AWS Lex client",
   "main": "build/index.js",
   "peerDependencies": {
-    "react": "^15.5.4"
+    "react": "^16.3.0"
   },
   "dependencies": {
     "aws-sdk": "^2.49.0",
     "css-loader": "^0.28.4",
     "prop-types": "^15.5.10",
-    "react": "^15.5.4",
+    "react": "^16.3.0",
     "style-loader": "^0.13.1",
     "webpack": "^2.6.1"
   },
