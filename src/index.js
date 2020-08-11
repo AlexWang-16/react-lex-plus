@@ -99,7 +99,10 @@ class LexChat extends React.Component {
     var requestPara = document.createElement("P");
     requestPara.className = "userRequest";
     requestPara.appendChild(document.createTextNode(daText));
-    conversationDiv.appendChild(requestPara);
+    var spacer = document.createElement("div");
+    spacer.className = "convoSpacer";
+    spacer.appendChild(requestPara);
+    conversationDiv.appendChild(spacer);
     conversationDiv.scrollTop = conversationDiv.scrollHeight;
   }
 
@@ -108,7 +111,10 @@ class LexChat extends React.Component {
     var errorPara = document.createElement("P");
     errorPara.className = "lexError";
     errorPara.appendChild(document.createTextNode(daText));
-    conversationDiv.appendChild(errorPara);
+    var spacer = document.createElement("div");
+    spacer.className = "convoSpacer";
+    spacer.appendChild(errorPara);
+    conversationDiv.appendChild(spacer);
     conversationDiv.scrollTop = conversationDiv.scrollHeight;
   }
 
@@ -118,17 +124,17 @@ class LexChat extends React.Component {
     responsePara.className = "lexResponse";
     if (lexResponse.message) {
       responsePara.appendChild(document.createTextNode(lexResponse.message));
-      responsePara.appendChild(document.createElement("br"));
     }
     if (lexResponse.dialogState === "ReadyForFulfillment") {
       responsePara.appendChild(
         document.createTextNode("Ready for fulfillment")
       );
       // TODO:  show slot values
-    } else {
-      responsePara.appendChild(document.createTextNode(""));
     }
-    conversationDiv.appendChild(responsePara);
+    var spacer = document.createElement("div");
+    spacer.className = "convoSpacer";
+    spacer.appendChild(responsePara);
+    conversationDiv.appendChild(spacer);
     conversationDiv.scrollTop = conversationDiv.scrollHeight;
   }
 

@@ -41338,7 +41338,10 @@ var LexChat = function (_React$Component) {
       var requestPara = document.createElement("P");
       requestPara.className = "userRequest";
       requestPara.appendChild(document.createTextNode(daText));
-      conversationDiv.appendChild(requestPara);
+      var spacer = document.createElement("div");
+      spacer.className = "convoSpacer";
+      spacer.appendChild(requestPara);
+      conversationDiv.appendChild(spacer);
       conversationDiv.scrollTop = conversationDiv.scrollHeight;
     }
   }, {
@@ -41348,7 +41351,10 @@ var LexChat = function (_React$Component) {
       var errorPara = document.createElement("P");
       errorPara.className = "lexError";
       errorPara.appendChild(document.createTextNode(daText));
-      conversationDiv.appendChild(errorPara);
+      var spacer = document.createElement("div");
+      spacer.className = "convoSpacer";
+      spacer.appendChild(errorPara);
+      conversationDiv.appendChild(spacer);
       conversationDiv.scrollTop = conversationDiv.scrollHeight;
     }
   }, {
@@ -41359,15 +41365,15 @@ var LexChat = function (_React$Component) {
       responsePara.className = "lexResponse";
       if (lexResponse.message) {
         responsePara.appendChild(document.createTextNode(lexResponse.message));
-        responsePara.appendChild(document.createElement("br"));
       }
       if (lexResponse.dialogState === "ReadyForFulfillment") {
         responsePara.appendChild(document.createTextNode("Ready for fulfillment"));
         // TODO:  show slot values
-      } else {
-        responsePara.appendChild(document.createTextNode(""));
       }
-      conversationDiv.appendChild(responsePara);
+      var spacer = document.createElement("div");
+      spacer.className = "convoSpacer";
+      spacer.appendChild(responsePara);
+      conversationDiv.appendChild(spacer);
       conversationDiv.scrollTop = conversationDiv.scrollHeight;
     }
   }, {
@@ -41671,7 +41677,7 @@ exports = module.exports = __webpack_require__(430)(false);
 
 
 // module
-exports.push([module.i, "input::placeholder {\n  color: #ccc;\n  font-style: italic;\n}\n\np.userRequest {\n  margin: 10px;\n  padding: 8px 13px 8px 14px;\n  border-radius: 4px;\n  min-width: 10%;\n  max-width: 85%;\n  float: left;\n  color: #ffffff;\n  background-color: #1289fe;\n  border-radius: 1em;\n  float: left;\n  font: 20px \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n}\n\np.lexResponse {\n  margin: 10px;\n  padding: 8px 13px 8px 14px;\n  border-radius: 4px;\n  text-align: left;\n  min-width: 10%;\n  max-width: 85%;\n  float: right;\n  color: #000000;\n  background-color: #e5e5ea;\n  font-style: italic;\n  border-radius: 1em;\n  float: right;\n  font: 20px \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n}\n\np.lexError {\n  margin: 10px;\n  padding: 4px 14px 4px 14px;\n  border-radius: 4px;\n  text-align: right;\n  min-width: 50%;\n  max-width: 85%;\n  float: right;\n  color: #ffffff;\n  background-color: #ff0000;\n  border-radius: 1em;\n  font: 20px \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n}\n\n.closed {\n  width: 400px;\n  margin-top: 0px;\n  max-height: 0px;\n  overflow: hidden;\n  transition: 0.3s cubic-bezier(0.3, 0, 0, 1.3);\n}\n.open {\n  max-height: 1000px;\n}\n\n#chatwrapper {\n  bottom: 0;\n  font-size: 12px;\n  right: 24px;\n  position: fixed;\n  width: 400px;\n  padding-bottom: 1px;\n}\n\n.chevron::before {\n  border-style: solid;\n  border-width: 4px 4px 0 0;\n  content: \"\";\n  display: inline-block;\n  height: 7px;\n  left: 2px;\n  position: relative;\n  top: 10px;\n  transform: translateY(35%) rotate(-45deg);\n  vertical-align: top;\n  width: 15px;\n  height: 15px;\n  margin-right: 24px;\n}\n\n.chevron.bottom:before {\n  transform: translateY(-18%) rotate(135deg);\n  width: 15px;\n  height: 15px;\n}\n", ""]);
+exports.push([module.i, "input::placeholder {\n  color: #ccc;\n  font-style: italic;\n}\n\ndiv.convoSpacer {\n  min-width: 100%;\n  float: left;\n}\n\np.userRequest {\n  margin: 10px;\n  padding: 8px 13px 8px 14px;\n  border-radius: 4px;\n  min-width: 10%;\n  max-width: 85%;\n  float: left;\n  color: #ffffff;\n  background-color: #1289fe;\n  border-radius: 1em;\n  float: left;\n  font: 20px \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n}\n\np.lexResponse {\n  margin: 10px;\n  padding: 8px 13px 8px 14px;\n  border-radius: 4px;\n  text-align: left;\n  min-width: 10%;\n  max-width: 85%;\n  float: right;\n  color: #000000;\n  background-color: #e5e5ea;\n  font-style: italic;\n  border-radius: 1em;\n  float: right;\n  font: 20px \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n}\n\np.lexError {\n  margin: 10px;\n  padding: 4px 14px 4px 14px;\n  border-radius: 4px;\n  text-align: right;\n  min-width: 50%;\n  max-width: 85%;\n  float: right;\n  color: #ffffff;\n  background-color: #ff0000;\n  border-radius: 1em;\n  font: 20px \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n}\n\n.closed {\n  width: 400px;\n  margin-top: 0px;\n  max-height: 0px;\n  overflow: hidden;\n  transition: 0.3s cubic-bezier(0.3, 0, 0, 1.3);\n}\n.open {\n  max-height: 1000px;\n}\n\n#chatwrapper {\n  bottom: 0;\n  font-size: 12px;\n  right: 24px;\n  position: fixed;\n  width: 400px;\n  padding-bottom: 1px;\n}\n\n.chevron::before {\n  border-style: solid;\n  border-width: 4px 4px 0 0;\n  content: \"\";\n  display: inline-block;\n  height: 7px;\n  left: 2px;\n  position: relative;\n  top: 10px;\n  transform: translateY(35%) rotate(-45deg);\n  vertical-align: top;\n  width: 15px;\n  height: 15px;\n  margin-right: 24px;\n}\n\n.chevron.bottom:before {\n  transform: translateY(-18%) rotate(135deg);\n  width: 15px;\n  height: 15px;\n}\n", ""]);
 
 // exports
 

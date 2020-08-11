@@ -3,6 +3,11 @@ input::placeholder {
   font-style: italic;
 }
 
+div.convoSpacer {
+  min-width: 100%;
+  float: left;
+}
+
 p.userRequest {
   margin: 10px;
   padding: 8px 13px 8px 14px;
