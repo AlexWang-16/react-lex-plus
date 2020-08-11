@@ -153,7 +153,7 @@ class LexChat extends React.Component {
       paddingTop: 12,
       paddingBottom: -12,
       color: "#FFFFFF",
-      fontSize: "24px",
+      fontSize: this.props.headerFontSize || "24px",
     };
 
     const chatcontainerStyle = {
@@ -215,6 +215,7 @@ LexChat.propTypes = {
   height: PropTypes.number,
   headerText: PropTypes.string,
   headerBackgroundColor: PropTypes.string,
+  headerFontSize: PropTypes.number,
 };
 
 export default LexChat;
