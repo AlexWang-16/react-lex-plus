@@ -169,8 +169,8 @@ class LexChat extends React.Component {
     };
 
     const headerReactStyle = _.merge(
-      this.props.headerstyle,
-      defaultHeaderRectStyle
+      defaultHeaderRectStyle,
+      this.props.headerstyle
     );
 
     const chatcontainerStyle = {

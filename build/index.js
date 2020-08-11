@@ -41409,7 +41409,7 @@ var LexChat = function (_React$Component) {
         fontSize: "24px"
       };
 
-      var headerReactStyle = _lodash2.default.merge(this.props.headerstyle, defaultHeaderRectStyle);
+      var headerReactStyle = _lodash2.default.merge(defaultHeaderRectStyle, this.props.headerstyle);
 
       var chatcontainerStyle = {
         backgroundColor: "#FFFFFF",
