@@ -13,6 +13,7 @@ p.userRequest {
   color: #ffffff;
   background-color: #1289fe;
   border-radius: 1em;
+  float: left;
   font: 20px "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
@@ -28,6 +29,7 @@ p.lexResponse {
   background-color: #e5e5ea;
   font-style: italic;
   border-radius: 1em;
+  float: right;
   font: 20px "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
