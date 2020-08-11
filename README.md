@@ -1,6 +1,15 @@
-# react-lex
+# react-lex-plus
 
-ReactJS AWS Lex Chat Component
+ReactJS AWS Lex Chat Component with additional features. Based on [React-Lex project](https://github.com/promediacorp/react-lex).
+
+## Additional Features
+
+- [x] Ability to customize header background color
+- [x] Ability to customize header font size
+- [x] Ability to customize header font color
+- [x] Ability to customize header top and bottom padding
+- [x] Ability to customize lexUserId
+- [x] Ability to customize initial greeting message
 
 ## Demo
 
@@ -10,20 +19,18 @@ ReactJS AWS Lex Chat Component
 <img src="https://thumbs.gfycat.com/ShabbyCourageousFalcon-size_restricted.gif" width="50%">
 
 ## Prerequisites
+
 The AWS Javascript SDK for the browser is required. This package will install the entire SDK, but all you need is AWS.LexRuntime and AWS.CognitoIdentity. We recommend you build your own version of the AWS SDK for JavaScript using the [builder](https://sdk.amazonaws.com/builder/js/) to include only the services you need.
 
-You will need to set up an AWS Cognito federated identity pool, and pass the IdentityPoolId as props to the component. Be sure to enable access to unauthenticated identities, and modify the IAM roles to allow access to Amazon Lex. From the IAM console, attach the AmazonLexRunBotsOnly and AmazonPollyReadOnlyAccess policies. [This blog post](https://aws.amazon.com/blogs/ai/greetings-visitor-engage-your-web-users-with-amazon-lex/) walks through the process in detail. 
-
-
+You will need to set up an AWS Cognito federated identity pool, and pass the IdentityPoolId as props to the component. Be sure to enable access to unauthenticated identities, and modify the IAM roles to allow access to Amazon Lex. From the IAM console, attach the AmazonLexRunBotsOnly and AmazonPollyReadOnlyAccess policies. [This blog post](https://aws.amazon.com/blogs/ai/greetings-visitor-engage-your-web-users-with-amazon-lex/) walks through the process in detail.
 
 ## Installing react-lex
 
 ```
-npm install --save react-lex
+npm install --save react-lex-plus
 ```
 
 ## Using the Component
-
 
 Example:
 
@@ -32,20 +39,23 @@ import LexChat from "react-lex";
 
 class App extends Component {
   render() {
-        <LexChat botName="OrderFlowers"
-                 IdentityPoolId="us-east-1:7292b8c0-56f1-4441-b2a6-xxxxxxxxxxxx"
-                 placeholder="Placeholder text"
-                 style={{position: 'absolute'}}
-                 backgroundColor="#FFFFFF"
-                 height="430px"
-                 region="us-east-1"
-                 headerText="Chat with our awesome bot" />
+    <LexChat
+      botName="OrderFlowers"
+      IdentityPoolId="us-east-1:7292b8c0-56f1-4441-b2a6-xxxxxxxxxxxx"
+      placeholder="Placeholder text"
+      style={{ position: "absolute" }}
+      backgroundColor="#FFFFFF"
+      height="430px"
+      region="us-east-1"
+      headerText="Chat with our awesome bot"
+    />;
   }
 }
 export default App;
 ```
-* Your botname (ie. "OrderFlowers") is a required prop.
-* Your IdentityPoolId is a required prop.
+
+- Your botname (ie. "OrderFlowers") is a required prop.
+- Your IdentityPoolId is a required prop.
 
 ##License
 
