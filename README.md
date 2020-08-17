@@ -68,7 +68,7 @@ export default App;
 - Your botname (ie. "OrderFlowers") is a required prop.
 - Your IdentityPoolId is a required prop.
 
-##License
+## License
 
 The MIT License (MIT)
 
