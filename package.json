@@ -7,12 +7,12 @@
     "react": "^16.3.0"
   },
   "dependencies": {
-    "aws-sdk": "^2.49.0",
-    "css-loader": "^0.28.4",
-    "prop-types": "^15.5.10",
+    "aws-sdk": "^2.734.0",
+    "css-loader": "^4.2.1",
+    "prop-types": "^15.7.2",
     "react": "^16.3.0",
-    "style-loader": "^0.13.1",
-    "webpack": "^2.6.1"
+    "style-loader": "^1.2.1",
+    "webpack": "^4.44.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -21,13 +21,13 @@
   },
   "author": "Alex Wang <experimentalists.2018@gmail.com>",
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-core": "^6.24.1",
-    "babel-loader": "^7.0.0",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.5.1",
-    "lodash": "^4.17.19"
+    "babel-preset-env": "^1.7.0",
+    "lodash": "^4.17.20"
   },
   "repository": {
     "type": "git",
