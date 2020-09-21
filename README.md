@@ -68,6 +68,20 @@ export default App;
 - Your botname (ie. "OrderFlowers") is a required prop.
 - Your IdentityPoolId is a required prop.
 
+## Development Notes
+
+### Local Development
+
+To develop this project locally while having it installed as a dependency of another project, use NPM Link.
+
+1. From this repo execute `npm link` to create a link from global NPM node_module folder to this folder.
+2. CD to your project folder and execute `npm link react-lex-plus` to create a link to the this repo.
+3. Update the code in this repo as needed.
+4. Run `npm run build` to compile changes.
+5. Refresh your web project to see changes.
+
+N.B. There's no need to perform `npm install` this project for localized developments.
+
 ## License
 
 The MIT License (MIT)
