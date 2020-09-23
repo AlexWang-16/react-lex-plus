@@ -1,19 +1,21 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import _ from "lodash";
+import merge from "lodash/merge";
 import "aws-sdk";
 import "./styles/chatbot.css";
 
 class LexChat extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       data: "",
-      lexUserId: "chatbot-demo" + Date.now(),
-      sessionAttributes: {},
+      lexUserId: "chatbot" + Date.now(),
+      sessionAttributes: this.props.sessionAttributes,
       visible: "closed",
     };
     this.conversationDivRef = React.createRef();
+    this.greetingMsgRef = React.createRef();
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
@@ -21,14 +23,12 @@ class LexChat extends React.Component {
   componentDidMount() {
     document.getElementById("inputField").focus();
 
-    const greetingNode = document.createElement("P");
+    let greetingNode = document.createElement("P");
+    this.greetingMsgRef.current = greetingNode;
     greetingNode.className = "lexResponse";
     greetingNode.appendChild(document.createTextNode(this.props.greeting));
     greetingNode.appendChild(document.createElement("br"));
-
-    if (this.props.greeting) {
-      this.conversationDivRef.current.appendChild(greetingNode);
-    }
+    this.conversationDivRef.current.appendChild(greetingNode);
 
     AWS.config.region = this.props.region || "us-east-1";
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
@@ -38,11 +38,32 @@ class LexChat extends React.Component {
     this.lexruntime = lexruntime;
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.props.sessionAttributes &&
+      this.props.sessionAttributes !== prevState.sessionAttributes
+    ) {
+      this.state.sessionAttributes = {
+        ...this.state.sessionAttributes,
+        ...this.props.sessionAttributes,
+      };
+    }
+
+    if (this.props.greeting && this.props.greeting !== prevProps.greeting) {
+      const greetingNodeRef = this.greetingMsgRef.current;
+      if (greetingNodeRef) {
+        greetingNodeRef.textContent = this.props.greeting;
+      }
+    }
+  }
+
   handleClick() {
     this.setState({
       visible: this.state.visible == "open" ? "closed" : "open",
     });
-    console.log(this.state);
+    if (this.props.debugMode === true) {
+      console.log(this.state);
+    }
   }
 
   pushChat(event) {
@@ -177,7 +198,7 @@ class LexChat extends React.Component {
       justifyContent: "space-between",
     };
 
-    const headerReactStyle = _.merge(
+    const headerReactStyle = merge(
       defaultHeaderRectStyle,
       this.props.headerStyle
     );
@@ -256,11 +277,15 @@ LexChat.propTypes = {
   headerColor: PropTypes.string,
   headerBackgroundColor: PropTypes.string,
   headerFontSize: PropTypes.number,
+  sessionAttributes: PropTypes.object,
+  debugMode: PropTypes.bool,
 };
 
 LexChat.defaultProps = {
   headerStyle: {},
   greeting: "",
+  sessionAttributes: {},
+  debugMode: false,
 };
 
 export default LexChat;
