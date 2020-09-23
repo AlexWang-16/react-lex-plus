@@ -42,7 +42,7 @@ The LexChat component has the following props available to you
 - headerStyle (optional - object) - An object that takes CSS styles to be applied to the header.
 - greeting (optional - string) - The initial message the bot sends to the user.
 - debugMode (optional - bool) - Turn on or off debug mode to print the state of LexChat component; Defaults to false if not provided.
-- sessionAttribute (optional - object) - An object with session attributes to be passed to your chatbot in AWS Lex.
+- sessionAttributes (optional - object) - An object with session attributes to be passed to your chatbot in AWS Lex.
 
 ### Example
 
