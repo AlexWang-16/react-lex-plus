@@ -100,7 +100,6 @@ class LexChat extends React.Component {
         if (data) {
           // capture the sessionAttributes for the next cycle
           this.setState({ sessionAttributes: data.sessionAttributes });
-          //sessionAttributes = data.sessionAttributes;
           // show response and/or error/dialog status
           this.showResponse(data);
         }
