@@ -9,6 +9,8 @@ ReactJS AWS Lex Chat Component with additional features. Based on [React-Lex pro
 - [ ] Ability to customize lexUserId
 - [x] Ability to customize initial greeting message
 - [x] Plays nicely with Bootstrap
+- [x] Ability to pass customized session attributes to Lex
+- [x] Debug mode to help with troubleshooting passing data to react-lex-plus
 
 ## Demo
 
@@ -30,15 +32,17 @@ npm install --save react-lex-plus
 
 The LexChat component has the following props available to you
 
-- botName (required - String) - The name of the bot as configured in AWS Lex
-- IdentityPoolId (required - String) - The cognito identity pool Id as configured in AWS cognito for the bot
-- placeholder (optional - String) - The placeholder text in the input textfield in the chat UI
-- backgroundColor (optional - String) - The background color of the conversation portion of chat UI
-- height (optional - string) - The height of the chat UI
-- region (optional - string) - The AWS region of AWS Lex used (defaults to us-east-1 if not provided)
-- headerText (optional - string) - The text that shows up in the header
-- headerStyle (optional - object) - An object that takes CSS styles to be applied to the header
-- greeting (optional - string) - The initial message the bot sends to the user
+- botName (required - string) - The name of the bot as configured in AWS Lex.
+- IdentityPoolId (required - string) - The cognito identity pool Id as configured in AWS cognito for the bot.
+- placeholder (optional - string) - The placeholder text in the input textfield in the chat UI.
+- backgroundColor (optional - string) - The background color of the conversation portion of chat UI.
+- height (optional - string) - The height of the chat UI.
+- region (optional - string) - The AWS region of AWS Lex used (defaults to us-east-1 if not provided).
+- headerText (optional - string) - The text that shows up in the header.
+- headerStyle (optional - object) - An object that takes CSS styles to be applied to the header.
+- greeting (optional - string) - The initial message the bot sends to the user.
+- debugMode (optional - bool) - Turn on or off debug mode to print the state of LexChat component; Defaults to false if not provided.
+- sessionAttribute (optional - object) - An object with session attributes to be passed to your chatbot in AWS Lex.
 
 ### Example
 
