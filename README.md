@@ -72,7 +72,7 @@ export default App;
 - Your botname (ie. "OrderFlowers") is a required prop.
 - Your IdentityPoolId is a required prop.
 
-## Development Notes
+## React-Lex-Plus Development Notes
 
 ### Local Development
 
