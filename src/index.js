@@ -1,63 +1,48 @@
-import React, { useEffect, useRef } from "react";
-//Proptypes used for datatype
+import React, { useEffect, useState, useRef } from "react";
+import { isEqual } from "lodash";
 import PropTypes from "prop-types";
 import merge from "lodash/merge";
-import "aws-sdk";
+import AWS from "aws-sdk";
 import "./styles/chatbot.css";
 
 //stateful component
-const LexChat = (props) => {
-  AWS.config.region = props.region || "us-east-1";
+function LexChat(props) {
+  AWS.config.region = props.region;
   AWS.config.credentials = new AWS.CognitoIdentityCredentials({
     IdentityPoolId: props.IdentityPoolId,
   });
   let lexruntime = new AWS.LexRuntime();
+  //setting lexUserId, removing it out of state. lexUserId creates once, theres no need to update/change its value in state.
+  let lexUserId = `chatbot${Date.now()}`;
   let conversationDivRef = useRef(null);
-  let greetingMsgRef = useRef(null);
+  // let greetingMsgRef = useRef(null);
 
   //default states being set
   const [state, setState] = useState({
     data: "",
-    lexUserId: "chatbot" + Date.now(),
     sessionAttributes: props.sessionAttributes,
     visible: "closed",
   });
 
   //Sets configurations from AWS and sets identity poolId
-  function onLoad() {
-    let greetingNode = document.createElement("P");
-    greetingMsgRef.current = greetingNode;
-    greetingNode.className = "lexReponse";
-    greetingNode.appendChild(document.createTextNode(props.greeting));
-    greetingNode.appendChild(document.createElement("br"));
-    conversationDivRef.current.appendChild(greetingNode);
-  }
 
   //useEffect runs when the dom renders this component
-  useEffect((prevProps, prevState) => {
-    onLoad();
-    if (
-      props.sessionAttributes &&
-      props.sessionAttributes !== prevState.sessionAttributes
-    ) {
-      state.sessionAttributes = {
-        ...state.sessionAttributes,
-        ...props.sessionAttributes,
-      };
+  useEffect(() => {
+    if (!isEqual(props.sessionAttributes, state.sessionAttributes)) {
+      setState({
+        ...state,
+        sessionAttributes: {
+          ...state.sessionAttributes,
+          ...props.sessionAttributes,
+        },
+      });
     }
-
-    if (props.greeting && props.greeting !== prevProps.greeting) {
-      const greetingNodeRef = greetingMsgRef.current;
-      if (greetingNodeRef) {
-        greetingNodeRef.textContent = props.greeting;
-      }
-    }
-  });
+  }, [props.sessionAttributes, state]);
 
   // handling the changed value in input
   function handleChange(event) {
     event.preventDefault();
-    setState((prevState) => ({ ...prevState, data: e.target.value }));
+    setState({ ...state, data: event.target.value });
   }
 
   //handling the slide open or close of the chat
@@ -113,8 +98,8 @@ const LexChat = (props) => {
     function showError(text) {
       let conversationDiv = document.getElementById("conversation");
       let errorParagraph = document.createElement("P");
-      errorPara.className = "lexError";
-      errorPara.appendChild(document.createTextNode(text));
+      errorParagraph.className = "lexError";
+      errorParagraph.appendChild(document.createTextNode(text));
       let spacer = document.createElement("div");
       spacer.className = "conversationSpacer";
       spacer.appendChild(errorParagraph);
@@ -127,7 +112,7 @@ const LexChat = (props) => {
       botAlias: "$LATEST",
       botName: props.botName,
       inputText: state.data,
-      userId: state.lexUserId,
+      userId: lexUserId,
       sessionAttributes: state.sessionAttributes,
     };
 
@@ -182,9 +167,9 @@ const LexChat = (props) => {
 
   const conversationStyle = {
     width: "400px",
-    height: this.props.height,
+    height: props.height,
     border: "px solid #ccc",
-    backgroundColor: this.props.backgroundColor,
+    backgroundColor: props.backgroundColor,
     padding: "4px",
     overflow: "scroll",
     borderBottom: "thin ridge #bfbfbf",
@@ -204,10 +189,7 @@ const LexChat = (props) => {
     justifyContent: "space-between",
   };
 
-  const headerReactStyle = merge(
-    defaultHeaderRectStyle,
-    this.props.headerStyle
-  );
+  const headerReactStyle = merge(defaultHeaderRectStyle, props.headerStyle);
 
   const chatcontainerStyle = {
     backgroundColor: "#FFFFFF",
@@ -251,7 +233,9 @@ const LexChat = (props) => {
           id="conversation"
           ref={conversationDivRef}
           style={conversationStyle}
-        />
+        >
+          <p className="lexResponse">{props.greeting}</p>
+        </div>
         <form id="chatform" style={chatFormStyle} onSubmit={pushChat}>
           <input
             type="text"
@@ -261,13 +245,13 @@ const LexChat = (props) => {
             placeholder={props.placeholder}
             onChange={handleChange} // changed the handleChange to handleChange()
             style={inputStyle}
-            autofocus="true" //added this autofocus equals true to remove focus
+            autoFocus={true} //added this autofocus equals true to remove focus
           />
         </form>
       </div>
     </div>
   );
-};
+}
 
 LexChat.propTypes = {
   botName: PropTypes.string,
@@ -281,6 +265,9 @@ LexChat.propTypes = {
   headerFontSize: PropTypes.number,
   sessionAttributes: PropTypes.object,
   debugMode: PropTypes.bool,
+  region: PropTypes.string,
+  greeting: PropTypes.string,
+  headerStyle: PropTypes.object,
 };
 
 LexChat.defaultProps = {
@@ -288,6 +275,7 @@ LexChat.defaultProps = {
   greeting: "",
   sessionAttributes: {},
   debugMode: false,
+  region: "us-east-1",
 };
 
 export default LexChat;
