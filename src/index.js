@@ -7,13 +7,13 @@ import "./styles/chatbot.css";
 
 //stateful component
 function LexChat(props) {
+  //Sets configurations from AWS and sets identity poolId
   AWS.config.region = props.region;
   AWS.config.credentials = new AWS.CognitoIdentityCredentials({
     IdentityPoolId: props.IdentityPoolId,
   });
   let lexruntime = new AWS.LexRuntime();
-  //setting lexUserId, removing it out of state. lexUserId creates once, theres no need to update/change its value in state.
-  let lexUserId = `chatbot${Date.now()}`;
+
   let conversationDivRef = useRef(null);
   // let greetingMsgRef = useRef(null);
 
@@ -24,7 +24,8 @@ function LexChat(props) {
     visible: "closed",
   });
 
-  //Sets configurations from AWS and sets identity poolId
+  //sets an one time lexUserId that is unique to the user during the time of use on the chat.
+  const [lexUserId] = useState(`chatbot${Date.now()}`);
 
   //useEffect runs when the dom renders this component
   useEffect(() => {
@@ -48,6 +49,8 @@ function LexChat(props) {
   //handling the slide open or close of the chat
   function handleClick(e) {
     e.preventDefault();
+    console.log("this is your userid", lexUserId);
+
     setState((prevState) => ({
       ...prevState,
       visible: state.visible == "open" ? "closed" : "open",
