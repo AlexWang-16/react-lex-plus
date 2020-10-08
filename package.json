@@ -3,14 +3,11 @@
   "version": "1.2.0",
   "description": "Reactjs AWS Lex client",
   "main": "build/index.js",
-  "peerDependencies": {
-    "react": "^16.3.0"
-  },
+  "peerDependencies": {},
   "dependencies": {
     "aws-sdk": "^2.734.0",
     "css-loader": "^4.2.1",
     "prop-types": "^15.7.2",
-    "react": "^16.3.0",
     "style-loader": "^1.2.1",
     "webpack": "^4.44.2"
   },
@@ -27,6 +24,9 @@
     "@babel/preset-env": "^7.11.5",
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
+    "eslint": "^7.10.0",
+    "eslint-plugin-react": "^7.21.3",
+    "eslint-plugin-react-hooks": "^4.1.2",
     "lodash": "^4.17.20",
     "webpack-cli": "^3.3.12"
   },
