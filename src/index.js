@@ -12,7 +12,7 @@ function LexChat(props) {
   AWS.config.credentials = new AWS.CognitoIdentityCredentials({
     IdentityPoolId: props.IdentityPoolId,
   });
-  let lexruntime = new AWS.LexRuntime();
+  let lexRunTime = new AWS.LexRuntime();
 
   let conversationDivRef = useRef(null);
   // let greetingMsgRef = useRef(null);
@@ -22,6 +22,7 @@ function LexChat(props) {
     data: "",
     sessionAttributes: props.sessionAttributes,
     visible: "closed",
+    messages: [],
   });
 
   //sets an one time lexUserId that is unique to the user during the time of use on the chat.
@@ -60,88 +61,53 @@ function LexChat(props) {
     }
   }
 
-  // runs when input is true and its submitted
-  function pushChat(e) {
-    e.preventDefault();
+  // sends text to the lex runtime
+  function handleTextSubmit() {
+    let inputText = state.data.trim();
+    if (inputText !== "") showRequest(inputText);
+  }
 
-    //We can feed in state.data instead of inputField and manually grabbing from DOM
-    function showRequest(text) {
-      let conversationDiv = document.getElementById("conversation");
-      let requestParagraph = document.createElement("P");
-      requestParagraph.className = "userRequest";
-      requestParagraph.appendChild(document.createTextNode(text));
-      let spacer = document.createElement("div");
-      spacer.className = "conversationSpacer";
-      spacer.appendChild(requestParagraph);
-      conversationDiv.appendChild(spacer);
-      conversationDiv.scrollTop = conversationDiv.scrollHeight;
-    }
+  /*******  Changed - move out from pushChat function **********************************************************************/
 
-    function showResponse(lexResponse) {
-      let conversationDiv = document.getElementById("conversation");
-      let responseParagraph = document.createElement("P");
-      responseParagraph.className = "lexResponse";
-      if (lexResponse.message) {
-        responseParagraph.appendChild(
-          document.createTextNode(lexResponse.message)
-        );
-      }
-      if (lexResponse.dialogState === "ReadyForFulfillment") {
-        responseParagraph.appendChild(
-          document.createTextNode("Ready for fulfillment")
-        );
-      }
-      let spacer = document.createElement("div");
-      spacer.className = "conversationSpacer";
-      spacer.appendChild(responseParagraph);
-      conversationDiv.appendChild(spacer);
-      conversationDiv.scrollTop = conversationDiv.scrollHeight;
-    }
+  //populates the screen with user inputted message and also calling sendToLex function
+  function showRequest(inputText) {
+    //Add input text into messages in state
+    let oldMessages = Object.assign([], state.messages);
+    oldMessages.push({ from: "user", msg: inputText });
+    setState((prevState) => ({
+      ...prevState,
+      messages: oldMessages,
+      data: "",
+    }));
+    sendToLex(inputText);
+  }
+  // function showRequest(inputText) {
+  //   let conversationDiv = document.getElementById("conversation");
+  //   let requestParagraph = document.createElement("P");
+  //   requestParagraph.className = "userRequest";
+  //   requestParagraph.appendChild(document.createTextNode(inputText));
+  //   let spacer = document.createElement("div");
+  //   spacer.className = "conversationSpacer";
+  //   spacer.appendChild(requestParagraph);
+  //   conversationDiv.appendChild(spacer);
+  //   conversationDiv.scrollTop = conversationDiv.scrollHeight;
+  // }
+  /*******  Changed - move out from pushChat function ************************************************************************/
 
-    function showError(text) {
-      let conversationDiv = document.getElementById("conversation");
-      let errorParagraph = document.createElement("P");
-      errorParagraph.className = "lexError";
-      errorParagraph.appendChild(document.createTextNode(text));
-      let spacer = document.createElement("div");
-      spacer.className = "conversationSpacer";
-      spacer.appendChild(errorParagraph);
-      conversationDiv.appendChild(spacer);
-      conversationDiv.scrollTop = conversationDiv.scrollHeight;
-    }
-
-    //params needed for lex runtime to send to backend.
+  // Responsible for sending mesage to Lex
+  function sendToLex(message) {
     let params = {
       botAlias: "$LATEST",
       botName: props.botName,
-      inputText: state.data,
+      inputText: message,
       userId: lexUserId,
       sessionAttributes: state.sessionAttributes,
     };
 
-    /***** Can we use state.data to check value changes to signal the ... sending message ***/
-    let inputFieldText = document.getElementById("inputField");
-
-    if (
-      inputFieldText &&
-      inputFieldText.value &&
-      inputFieldText.value.trim().length > 0
-    ) {
-      //disable input to show we're sending it
-      var inputField = inputFieldText.value.trim();
-      inputFieldText.value = "...";
-      inputFieldText.locked = true;
-    }
-
-    /***** Can we use state.data to check value changes to signal the ... sending message ***/
-
-    //We can feed in state.data instead of inputField and manually grabbing from DOM
-    showRequest(inputField);
-
-    lexruntime.postText(params, function (err, data) {
+    lexRunTime.postText(params, function (err, data) {
       if (err) {
         console.log(err, err.stack);
-        showError("Error:" + err.message + "(see console for detail)");
+        // showError("Error:" + err.message + "(see console for detail)"); ----- this will need to get changed
       } else if (data) {
         // capture the sessionAttributes for the next cycle
 
@@ -151,13 +117,106 @@ function LexChat(props) {
       }
       // re-enable input
 
-      inputFieldText.value = "";
-      inputFieldText.locked = false;
+      // inputFieldText.value = "";
+      // inputFieldText.locked = false;
     });
-
-    // we always cancel form submission
-    return false;
   }
+
+  function showResponse(lexResponse) {
+    let lexMessage = lexResponse.message;
+    let oldMessages = Object.assign([], state.messages);
+    oldMessages.push({ from: "bot", msg: lexMessage });
+    setState((prevState) => ({
+      ...prevState,
+      messages: oldMessages,
+    }));
+  }
+
+  // runs when input is true and its submitted
+  // function pushChat(e) {
+  //   e.preventDefault();
+
+  //   function showResponse(lexResponse) {
+  //     let conversationDiv = document.getElementById("conversation");
+  //     let responseParagraph = document.createElement("P");
+  //     responseParagraph.className = "lexResponse";
+  //     if (lexResponse.message) {
+  //       responseParagraph.appendChild(
+  //         document.createTextNode(lexResponse.message)
+  //       );
+  //     }
+  //     if (lexResponse.dialogState === "ReadyForFulfillment") {
+  //       responseParagraph.appendChild(
+  //         document.createTextNode("Ready for fulfillment")
+  //       );
+  //     }
+  //     let spacer = document.createElement("div");
+  //     spacer.className = "conversationSpacer";
+  //     spacer.appendChild(responseParagraph);
+  //     conversationDiv.appendChild(spacer);
+  //     conversationDiv.scrollTop = conversationDiv.scrollHeight;
+  //   }
+
+  // function showError(text) {
+  //   let conversationDiv = document.getElementById("conversation");
+  //   let errorParagraph = document.createElement("P");
+  //   errorParagraph.className = "lexError";
+  //   errorParagraph.appendChild(document.createTextNode(text));
+  //   let spacer = document.createElement("div");
+  //   spacer.className = "conversationSpacer";
+  //   spacer.appendChild(errorParagraph);
+  //   conversationDiv.appendChild(spacer);
+  //   conversationDiv.scrollTop = conversationDiv.scrollHeight;
+  // }
+
+  //params needed for lex runtime to send to backend.
+  // let params = {
+  //   botAlias: "$LATEST",
+  //   botName: props.botName,
+  //   inputText: state.data,
+  //   userId: lexUserId,
+  //   sessionAttributes: state.sessionAttributes,
+  // };
+
+  /***** Can we use state.data to check value changes to signal the ... sending message ***/
+  // let inputFieldText = document.getElementById("inputField");
+
+  // if (
+  //   inputFieldText &&
+  //   inputFieldText.value &&
+  //   inputFieldText.value.trim().length > 0
+  // ) {
+  //   //disable input to show we're sending it
+  //   var inputField = inputFieldText.value.trim();
+  //   inputFieldText.value = "...";
+  //   inputFieldText.locked = true;
+  // }
+
+  /***** Can we use state.data to check value changes to signal the ... sending message ***/
+
+  //We can feed in state.data instead of inputField and manually grabbing from DOM
+  // showRequest(inputField);
+
+  // lexruntime.postText(params, function (err, data) {
+  //   if (err) {
+  //     console.log(err, err.stack);
+  //     showError("Error:" + err.message + "(see console for detail)");
+  //   } else if (data) {
+  //     // capture the sessionAttributes for the next cycle
+
+  //     setState({ sessionAttributes: data.sessionAttributes });
+  //     // show response and/or error/dialog status
+  //     showResponse(data);
+  //   }
+  //   // re-enable input
+
+  //   inputFieldText.value = "";
+  //   inputFieldText.locked = false;
+  // });
+
+  // we always cancel form submission
+  //   return false;
+  // }
 
   const inputStyle = {
     padding: "4px",
@@ -239,7 +298,7 @@ function LexChat(props) {
         >
           <p className="lexResponse">{props.greeting}</p>
         </div>
-        <form id="chatform" style={chatFormStyle} onSubmit={pushChat}>
+        <form id="chatform" style={chatFormStyle} onSubmit={handleTextSubmit}>
           <input
             type="text"
             id="inputField"
