@@ -93,3 +93,35 @@ p.lexError {
   width: 15px;
   height: 15px;
 }
+
+/*****************/
+
+.botMessages {
+  margin: 10px;
+  padding: 8px 13px 8px 14px;
+  border-radius: 4px;
+  text-align: left;
+  min-width: 10%;
+  max-width: 85%;
+  float: right;
+  color: #000000;
+  background-color: #e5e5ea;
+  font-style: italic;
+  border-radius: 1em;
+  float: right;
+  font: 20px "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.userMessages {
+  margin: 10px;
+  padding: 8px 13px 8px 14px;
+  border-radius: 4px;
+  min-width: 10%;
+  max-width: 85%;
+  float: left;
+  color: #ffffff;
+  background-color: #1289fe;
+  border-radius: 1em;
+  float: left;
+  font: 20px "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
