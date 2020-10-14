@@ -3,7 +3,7 @@ import { isEqual } from "lodash";
 import PropTypes from "prop-types";
 import merge from "lodash/merge";
 import AWS from "aws-sdk";
-// import ChatListItem from "./ChatListItem";
+import ChatListItem from "./components/ChatListItem";
 import "./styles/chatbot.css";
 
 function LexChat(props) {
@@ -82,12 +82,9 @@ function LexChat(props) {
   }
 
   function showError(lexError) {
-    let lexMessage = lexError;
-    let oldMessages = Object.assign([], state.messages);
-    oldMessages.push({ from: "ERR", msg: lexMessage });
     setState((prevState) => ({
       ...prevState,
-      messages: oldMessages,
+      messages: [...prevState.messages, { from: "error", msg: lexError }],
     }));
   }
 
@@ -110,6 +107,7 @@ function LexChat(props) {
         );
         showError(`Error: ${err.message} (see console for detail)`);
       } else if (data) {
+        console.log("data from lexrun", data);
         // capture the sessionAttributes for the next cycle
         setState((prevState) => ({
           ...prevState,
@@ -171,9 +169,6 @@ function LexChat(props) {
     padding: "2px",
   };
 
-  console.log("before return message", state.messages);
-  console.log("before return data", state.data);
-
   return (
     <div id="chatwrapper">
       <div
@@ -201,14 +196,7 @@ function LexChat(props) {
         className={state.visible}
         style={chatcontainerStyle}
       >
-        <div
-        // id="conversation"
-        // ref={conversationDivRef}
-        // style={conversationStyle}
-        >
-          <p className="lexResponse">{props.greeting}</p>
-          {/* <ChatListItem message={state} /> */}
-        </div>
+        <ChatListItem message={state.messages} greeting={props.greeting} />
 
         <form id="chatform" style={chatFormStyle} onSubmit={handleTextSubmit}>
           <input
