@@ -133,16 +133,6 @@ function LexChat(props) {
     border: "10px",
   };
 
-  // const conversationStyle = {
-  //   width: "400px",
-  //   height: props.height,
-  //   border: "px solid #ccc",
-  //   backgroundColor: props.backgroundColor,
-  //   padding: "4px",
-  //   overflow: "scroll",
-  //   borderBottom: "thin ridge #bfbfbf",
-  // };
-
   const defaultHeaderRectStyle = {
     backgroundColor: "#000000",
     width: "408px",
@@ -196,7 +186,11 @@ function LexChat(props) {
         className={state.visible}
         style={chatcontainerStyle}
       >
-        <ChatListItem message={state.messages} greeting={props.greeting} />
+        <ChatListItem
+          message={state.messages}
+          greeting={props.greeting}
+          style={props}
+        />
 
         <form id="chatform" style={chatFormStyle} onSubmit={handleTextSubmit}>
           <input

@@ -2,6 +2,15 @@ import React from "react";
 import "./ChatListItem.css";
 
 function ChatListItem(props) {
+  const conversationStyle = {
+    width: "400px",
+    height: props.style.height,
+    border: "px solid #ccc",
+    backgroundColor: props.style.backgroundColor,
+    padding: "4px",
+    overflow: "scroll",
+    borderBottom: "thin ridge #bfbfbf",
+  };
   function renderItem(item, index) {
     let style = "";
 
@@ -39,7 +48,7 @@ function ChatListItem(props) {
   }
 
   return (
-    <div>
+    <div style={conversationStyle}>
       <p className="bot-messageBubble">{props.greeting}</p>
       {props.message.map((items, index) => renderItem(items, index))}
     </div>
