@@ -48,7 +48,7 @@ function LexChat(props) {
         },
       });
     }
-  }, [props.sessionAttributes]);
+  }, [prevSessionAttributes, props.sessionAttributes, state]);
 
   // handling the changed value in input
   function handleChange(event) {
@@ -130,7 +130,7 @@ function LexChat(props) {
       botName: props.botName,
       inputText: state.data,
       userId: lexUserId,
-      sessionAttributes: props.sessionAttributes,
+      sessionAttributes: state.sessionAttributes,
     };
 
     /***** Can we use state.data to check value changes to signal the ... sending message ***/
@@ -289,12 +289,12 @@ LexChat.propTypes = {
 };
 
 LexChat.defaultProps = {
+  alias: "production",
   headerStyle: {},
   greeting: "",
   sessionAttributes: {},
   debugMode: false,
   region: "us-east-1",
-  alias: "latest",
 };
 
 export default LexChat;
