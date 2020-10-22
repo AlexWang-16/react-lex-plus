@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, usePrevious } from "react";
 import { isEqual } from "lodash";
 import PropTypes from "prop-types";
 import merge from "lodash/merge";
-import AWS from "aws-sdk";
+import AWS from "aws-sdk/clients/lexRunTime";
 import ChatListItem from "./components/ChatListItem";
 import "./styles/chatbot.css";
 
@@ -14,18 +14,33 @@ function LexChat(props) {
   });
   let lexRunTime = new AWS.LexRuntime();
 
+  let conversationDivRef = useRef(null);
+
+  const usePrevious = (value) => {
+    const ref = useRef();
+    useEffect(() => {
+      ref.current = value;
+    });
+    return ref.current;
+  };
+
+  //default states being set
   const [state, setState] = useState({
     data: "",
-    sessionAttributes: props.sessionAttributes,
+    sessionAttributes: "",
     visible: "closed",
     messages: [],
   });
 
   //sets an one time lexUserId that is unique to the user during the time of use on the chat.
   const [lexUserId] = useState(`chatbot${Date.now()}`);
+  const prevSessionAttributes = usePrevious(props.sessionAttributes);
 
   useEffect(() => {
-    if (!isEqual(props.sessionAttributes, state.sessionAttributes)) {
+    if (
+      prevSessionAttributes &&
+      !isEqual(prevSessionAttributes, props.sessionAttributes)
+    ) {
       setState({
         ...state,
         sessionAttributes: {
@@ -34,7 +49,7 @@ function LexChat(props) {
         },
       });
     }
-  }, [props.sessionAttributes, state]);
+  }, [prevSessionAttributes, props.sessionAttributes, state]);
 
   function handleChange(event) {
     event.preventDefault();
@@ -91,7 +106,7 @@ function LexChat(props) {
   // Responsible for sending mesage to Lex
   function sendToLex(message) {
     let params = {
-      botAlias: "$LATEST",
+      botAlias: props.alias,
       botName: props.botName,
       inputText: message,
       userId: lexUserId,
@@ -210,6 +225,7 @@ function LexChat(props) {
 }
 
 LexChat.propTypes = {
+  alias: PropTypes.string,
   botName: PropTypes.string,
   IdentityPoolId: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
@@ -227,6 +243,7 @@ LexChat.propTypes = {
 };
 
 LexChat.defaultProps = {
+  alias: "production",
   headerStyle: {},
   greeting: "",
   sessionAttributes: {},
