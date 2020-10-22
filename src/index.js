@@ -294,7 +294,7 @@ LexChat.defaultProps = {
   sessionAttributes: {},
   debugMode: false,
   region: "us-east-1",
-  alias: "$LATEST",
+  alias: "latest",
 };
 
 export default LexChat;
