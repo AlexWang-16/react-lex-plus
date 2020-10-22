@@ -15,21 +15,31 @@ function LexChat(props) {
   let lexruntime = new AWS.LexRuntime();
 
   let conversationDivRef = useRef(null);
-  // let greetingMsgRef = useRef(null);
+
+  const usePrevious = (value) => {
+    const ref = useRef();
+    useEffect(() => {
+      ref.current = value;
+    });
+    return ref.current;
+  };
 
   //default states being set
   const [state, setState] = useState({
     data: "",
-    sessionAttributes: props.sessionAttributes,
+    sessionAttributes: "",
     visible: "closed",
   });
 
   //sets an one time lexUserId that is unique to the user during the time of use on the chat.
   const [lexUserId] = useState(`chatbot${Date.now()}`);
+  const prevSessionAttributes = usePrevious(props.sessionAttributes);
 
-  //useEffect runs when the dom renders this component
   useEffect(() => {
-    if (!isEqual(props.sessionAttributes, state.sessionAttributes)) {
+    if (
+      prevSessionAttributes &&
+      !isEqual(prevSessionAttributes, props.sessionAttributes)
+    ) {
       setState({
         ...state,
         sessionAttributes: {
@@ -38,7 +48,7 @@ function LexChat(props) {
         },
       });
     }
-  }, [props.sessionAttributes, state]);
+  }, [props.sessionAttributes]);
 
   // handling the changed value in input
   function handleChange(event) {
@@ -78,6 +88,10 @@ function LexChat(props) {
     }
 
     function showResponse(lexResponse) {
+      if (props.debugMode === true) {
+        const stringResponse = JSON.stringify(lexResponse);
+        console.log(`lexResponse: ${stringResponse}`);
+      }
       let conversationDiv = document.getElementById("conversation");
       let responseParagraph = document.createElement("P");
       responseParagraph.className = "lexResponse";
@@ -116,7 +130,7 @@ function LexChat(props) {
       botName: props.botName,
       inputText: state.data,
       userId: lexUserId,
-      sessionAttributes: state.sessionAttributes,
+      sessionAttributes: props.sessionAttributes,
     };
 
     /***** Can we use state.data to check value changes to signal the ... sending message ***/
