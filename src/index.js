@@ -126,7 +126,7 @@ function LexChat(props) {
 
     //params needed for lex runtime to send to backend.
     let params = {
-      botAlias: "$LATEST",
+      botAlias: props.alias,
       botName: props.botName,
       inputText: state.data,
       userId: lexUserId,
@@ -271,6 +271,7 @@ function LexChat(props) {
 }
 
 LexChat.propTypes = {
+  alias: PropTypes.string,
   botName: PropTypes.string,
   IdentityPoolId: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
@@ -293,6 +294,7 @@ LexChat.defaultProps = {
   sessionAttributes: {},
   debugMode: false,
   region: "us-east-1",
+  alias: "$LATEST",
 };
 
 export default LexChat;
