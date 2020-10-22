@@ -83,7 +83,7 @@ class LexChat extends React.Component {
 
       // send it to the Lex runtime
       var params = {
-        botAlias: "$LATEST",
+        botAlias: props.alias,
         botName: this.props.botName,
         inputText: inputField,
         userId: this.state.lexUserId,
@@ -267,6 +267,7 @@ class LexChat extends React.Component {
 }
 
 LexChat.propTypes = {
+  alias: PropTypes.string,
   botName: PropTypes.string,
   IdentityPoolId: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
@@ -281,6 +282,7 @@ LexChat.propTypes = {
 };
 
 LexChat.defaultProps = {
+  alias: "production",
   headerStyle: {},
   greeting: "",
   sessionAttributes: {},

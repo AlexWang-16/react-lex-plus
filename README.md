@@ -7,6 +7,7 @@ ReactJS AWS Lex Chat Component with additional features. Based on [React-Lex pro
 
 - [x] Ability to customize header styling using inline CSS
 - [ ] Ability to customize lexUserId
+- [x] Ability to cusotmize bot alias
 - [x] Ability to customize initial greeting message
 - [x] Plays nicely with Bootstrap
 - [x] Ability to pass customized session attributes to Lex
@@ -32,6 +33,7 @@ npm install --save react-lex-plus
 
 The LexChat component has the following props available to you
 
+- alias (optional - string) - The bot alias react-lex-plus should use. Defaults to "production"; See [setup alias guide](SETUP_BOT_ALIAS.md) for more details.
 - botName (required - string) - The name of the bot as configured in AWS Lex.
 - IdentityPoolId (required - string) - The cognito identity pool Id as configured in AWS cognito for the bot.
 - placeholder (optional - string) - The placeholder text in the input textfield in the chat UI.
