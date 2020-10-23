@@ -1,18 +1,18 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, usePrevious } from "react";
 import { isEqual } from "lodash";
 import PropTypes from "prop-types";
 import merge from "lodash/merge";
-import AWS from "aws-sdk";
+import AWS from "aws-sdk/clients/lexRunTime";
+import ChatListItem from "./components/ChatListItem";
 import "./styles/chatbot.css";
 
-//stateful component
 function LexChat(props) {
   //Sets configurations from AWS and sets identity poolId
   AWS.config.region = props.region;
   AWS.config.credentials = new AWS.CognitoIdentityCredentials({
     IdentityPoolId: props.IdentityPoolId,
   });
-  let lexruntime = new AWS.LexRuntime();
+  let lexRunTime = new AWS.LexRuntime();
 
   let conversationDivRef = useRef(null);
 
@@ -29,6 +29,7 @@ function LexChat(props) {
     data: "",
     sessionAttributes: "",
     visible: "closed",
+    messages: [],
   });
 
   //sets an one time lexUserId that is unique to the user during the time of use on the chat.
@@ -50,126 +51,91 @@ function LexChat(props) {
     }
   }, [prevSessionAttributes, props.sessionAttributes, state]);
 
-  // handling the changed value in input
   function handleChange(event) {
     event.preventDefault();
     setState({ ...state, data: event.target.value });
   }
 
-  //handling the slide open or close of the chat
   function handleClick(e) {
     e.preventDefault();
-    console.log("this is your userid", lexUserId);
 
     setState((prevState) => ({
       ...prevState,
       visible: state.visible == "open" ? "closed" : "open",
     }));
     if (props.debugMode === true) {
-      console.log(state);
+      console.log("state");
     }
   }
 
-  // runs when input is true and its submitted
-  function pushChat(e) {
+  // sends text to the lex runtime
+  function handleTextSubmit(e) {
     e.preventDefault();
+    let inputText = state.data.trim();
+    if (inputText !== "") showRequest(inputText);
+  }
 
-    //We can feed in state.data instead of inputField and manually grabbing from DOM
-    function showRequest(text) {
-      let conversationDiv = document.getElementById("conversation");
-      let requestParagraph = document.createElement("P");
-      requestParagraph.className = "userRequest";
-      requestParagraph.appendChild(document.createTextNode(text));
-      let spacer = document.createElement("div");
-      spacer.className = "conversationSpacer";
-      spacer.appendChild(requestParagraph);
-      conversationDiv.appendChild(spacer);
-      conversationDiv.scrollTop = conversationDiv.scrollHeight;
-    }
+  //populates the screen with user inputted message and also calling sendToLex function
+  function showRequest(inputText) {
+    //Add input text into messages in state
+    setState((prevState) => ({
+      ...prevState,
+      messages: [...prevState.messages, { from: "user", msg: inputText }],
+      data: "",
+    }));
+    sendToLex(inputText);
+  }
 
-    function showResponse(lexResponse) {
-      if (props.debugMode === true) {
-        const stringResponse = JSON.stringify(lexResponse);
-        console.log(`lexResponse: ${stringResponse}`);
-      }
-      let conversationDiv = document.getElementById("conversation");
-      let responseParagraph = document.createElement("P");
-      responseParagraph.className = "lexResponse";
-      if (lexResponse.message) {
-        responseParagraph.appendChild(
-          document.createTextNode(lexResponse.message)
-        );
-      }
-      if (lexResponse.dialogState === "ReadyForFulfillment") {
-        responseParagraph.appendChild(
-          document.createTextNode("Ready for fulfillment")
-        );
-      }
-      let spacer = document.createElement("div");
-      spacer.className = "conversationSpacer";
-      spacer.appendChild(responseParagraph);
-      conversationDiv.appendChild(spacer);
-      conversationDiv.scrollTop = conversationDiv.scrollHeight;
-    }
+  function showResponse(lexResponse) {
+    setState((prevState) => ({
+      ...prevState,
+      messages: [
+        ...prevState.messages,
+        { from: "bot", msg: lexResponse.message },
+      ],
+    }));
+  }
 
-    function showError(text) {
-      let conversationDiv = document.getElementById("conversation");
-      let errorParagraph = document.createElement("P");
-      errorParagraph.className = "lexError";
-      errorParagraph.appendChild(document.createTextNode(text));
-      let spacer = document.createElement("div");
-      spacer.className = "conversationSpacer";
-      spacer.appendChild(errorParagraph);
-      conversationDiv.appendChild(spacer);
-      conversationDiv.scrollTop = conversationDiv.scrollHeight;
-    }
+  function showError(lexError) {
+    setState((prevState) => ({
+      ...prevState,
+      messages: [...prevState.messages, { from: "error", msg: lexError }],
+    }));
+  }
 
-    //params needed for lex runtime to send to backend.
+  // Responsible for sending mesage to Lex
+  function sendToLex(message) {
     let params = {
       botAlias: props.alias,
       botName: props.botName,
-      inputText: state.data,
+      inputText: message,
       userId: lexUserId,
       sessionAttributes: state.sessionAttributes,
     };
 
-    /***** Can we use state.data to check value changes to signal the ... sending message ***/
-    let inputFieldText = document.getElementById("inputField");
-
-    if (
-      inputFieldText &&
-      inputFieldText.value &&
-      inputFieldText.value.trim().length > 0
-    ) {
-      //disable input to show we're sending it
-      var inputField = inputFieldText.value.trim();
-      inputFieldText.value = "...";
-      inputFieldText.locked = true;
-    }
-
-    /***** Can we use state.data to check value changes to signal the ... sending message ***/
-
-    //We can feed in state.data instead of inputField and manually grabbing from DOM
-    showRequest(inputField);
-
-    lexruntime.postText(params, function (err, data) {
+    lexRunTime.postText(params, function (err, data) {
       if (err) {
-        console.log(err, err.stack);
-        showError("Error:" + err.message + "(see console for detail)");
+        console.log(
+          "this is your ERROR from within the lexruntime",
+          err,
+          err.stack
+        );
+        showError(`Error: ${err.message} (see console for detail)`);
       } else if (data) {
+        console.log("data from lexrun", data);
         // capture the sessionAttributes for the next cycle
-
-        setState({ sessionAttributes: data.sessionAttributes });
+        setState((prevState) => ({
+          ...prevState,
+          sessionAttributes: data.sessionAttributes,
+        }));
         // show response and/or error/dialog status
         showResponse(data);
       }
       // re-enable input
 
-      inputFieldText.value = "";
-      inputFieldText.locked = false;
+      // inputFieldText.value = "";
+      // inputFieldText.locked = false;
     });
-
-    // we always cancel form submission
     return false;
   }
 
@@ -180,16 +146,6 @@ function LexChat(props) {
     height: "40px",
     borderRadius: "1px",
     border: "10px",
-  };
-
-  const conversationStyle = {
-    width: "400px",
-    height: props.height,
-    border: "px solid #ccc",
-    backgroundColor: props.backgroundColor,
-    padding: "4px",
-    overflow: "scroll",
-    borderBottom: "thin ridge #bfbfbf",
   };
 
   const defaultHeaderRectStyle = {
@@ -225,7 +181,7 @@ function LexChat(props) {
         style={headerReactStyle}
         onClick={handleClick} // change handleClick to handleClick()
       >
-        <span />
+        <span /> {/* what is this span for?*/}
         <span
           style={{
             fontSize: headerReactStyle.fontSize,
@@ -234,7 +190,6 @@ function LexChat(props) {
         >
           {props.headerText}
         </span>
-
         {state.visible === "open" ? (
           <span className="chevron top"></span>
         ) : (
@@ -246,19 +201,18 @@ function LexChat(props) {
         className={state.visible}
         style={chatcontainerStyle}
       >
-        <div
-          id="conversation"
-          ref={conversationDivRef}
-          style={conversationStyle}
-        >
-          <p className="lexResponse">{props.greeting}</p>
-        </div>
-        <form id="chatform" style={chatFormStyle} onSubmit={pushChat}>
+        <ChatListItem
+          message={state.messages}
+          greeting={props.greeting}
+          style={props}
+        />
+
+        <form id="chatform" style={chatFormStyle} onSubmit={handleTextSubmit}>
           <input
             type="text"
             id="inputField"
             size="40"
-            value={state.data}
+            value={state.data || ""}
             placeholder={props.placeholder}
             onChange={handleChange} // changed the handleChange to handleChange()
             style={inputStyle}

@@ -1,0 +1,34 @@
+p {
+  margin: 30px 10px 30px 10;
+  padding: 8px 13px 8px 14px;
+  border-radius: 4px;
+  min-width: 10%;
+  max-width: 85%;
+  border-radius: 1em;
+  font: 20px "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.bot-messageBubble {
+  text-align: left;
+  float: right;
+  color: #000000;
+  background-color: #e5e5ea;
+  font-style: italic;
+  float: right;
+}
+
+.user-messageBubble {
+  float: left;
+  color: #ffffff;
+  background-color: #1289fe;
+  float: left;
+}
+
+.error-messageBubble {
+  padding: 4px 14px 4px 14px;
+  text-align: right;
+  min-width: 50%;
+  float: right;
+  color: #ffffff;
+  background-color: #ff0000;
+}
