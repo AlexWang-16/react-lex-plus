@@ -5,7 +5,9 @@
   "main": "build/index.js",
   "peerDependencies": {},
   "dependencies": {
-    "aws-sdk": "^2.734.0",
+    "@aws-sdk/client-cognito-identity": "^1.0.0-rc.2",
+    "@aws-sdk/client-lex-runtime-service": "^1.0.0-rc.2",
+    "@aws-sdk/credential-provider-cognito-identity": "^1.0.0-rc.2",
     "css-loader": "^4.2.1",
     "prop-types": "^15.7.2",
     "style-loader": "^1.2.1",

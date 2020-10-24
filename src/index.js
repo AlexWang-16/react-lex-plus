@@ -1,20 +1,23 @@
-import React, { useEffect, useState, usePrevious } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { isEqual } from "lodash";
 import PropTypes from "prop-types";
 import merge from "lodash/merge";
-import AWS from "aws-sdk/clients/lexRunTime";
+import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
+import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
+import { LexRuntimeService } from "@aws-sdk/client-lex-runtime-service";
 import ChatListItem from "./components/ChatListItem";
 import "./styles/chatbot.css";
 
 function LexChat(props) {
-  //Sets configurations from AWS and sets identity poolId
-  AWS.config.region = props.region;
-  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-    IdentityPoolId: props.IdentityPoolId,
+  let lexRunTime = new LexRuntimeService({
+    region: props.region,
+    credentials: fromCognitoIdentityPool({
+      client: new CognitoIdentityClient({
+        region: props.region,
+      }),
+      identityPoolId: props.IdentityPoolId,
+    }),
   });
-  let lexRunTime = new AWS.LexRuntime();
-
-  let conversationDivRef = useRef(null);
 
   const usePrevious = (value) => {
     const ref = useRef();
@@ -63,6 +66,7 @@ function LexChat(props) {
       ...prevState,
       visible: state.visible == "open" ? "closed" : "open",
     }));
+
     if (props.debugMode === true) {
       console.log("state");
     }
@@ -115,24 +119,27 @@ function LexChat(props) {
 
     lexRunTime.postText(params, function (err, data) {
       if (err) {
-        console.log(
-          "this is your ERROR from within the lexruntime",
-          err,
-          err.stack
-        );
+        if (props.debugMode === true) {
+          console.log(
+            "this is your ERROR from within the lexruntime",
+            err,
+            err.stack
+          );
+        }
         showError(`Error: ${err.message} (see console for detail)`);
       } else if (data) {
-        console.log("data from lexrun", data);
-        // capture the sessionAttributes for the next cycle
+        if (props.debugMode === true) {
+          console.log("data from lexrun", data);
+        }
+        // save session attributes returned from lex
         setState((prevState) => ({
           ...prevState,
           sessionAttributes: data.sessionAttributes,
         }));
-        // show response and/or error/dialog status
         showResponse(data);
       }
-      // re-enable input
 
+      // FIXME: Add this functionality back
       // inputFieldText.value = "";
       // inputFieldText.locked = false;
     });
@@ -176,12 +183,7 @@ function LexChat(props) {
 
   return (
     <div id="chatwrapper">
-      <div
-        id="chat-header-rect"
-        style={headerReactStyle}
-        onClick={handleClick} // change handleClick to handleClick()
-      >
-        <span /> {/* what is this span for?*/}
+      <div id="chat-header-rect" style={headerReactStyle} onClick={handleClick}>
         <span
           style={{
             fontSize: headerReactStyle.fontSize,
@@ -214,9 +216,9 @@ function LexChat(props) {
             size="40"
             value={state.data || ""}
             placeholder={props.placeholder}
-            onChange={handleChange} // changed the handleChange to handleChange()
+            onChange={handleChange}
             style={inputStyle}
-            autoFocus={true} //added this autofocus equals true to remove focus
+            autoFocus={true}
           />
         </form>
       </div>
