@@ -8,9 +8,8 @@
     "@aws-sdk/client-cognito-identity": "^1.0.0-rc.2",
     "@aws-sdk/client-lex-runtime-service": "^1.0.0-rc.2",
     "@aws-sdk/credential-provider-cognito-identity": "^1.0.0-rc.2",
-    "css-loader": "^4.2.1",
-    "prop-types": "^15.7.2",
-    "style-loader": "^1.2.1",
+    "css-loader": "^5.0.0",
+    "style-loader": "^2.0.0",
     "webpack": "^4.44.2"
   },
   "scripts": {
