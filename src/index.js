@@ -117,6 +117,10 @@ function LexChat(props) {
       sessionAttributes: state.sessionAttributes,
     };
 
+    if (props.debugMode == true) {
+      console.log(`Lex Params: ${JSON.stringify(params)}`)
+    }
+
     lexRunTime.postText(params, function (err, data) {
       if (err) {
         if (props.debugMode === true) {
@@ -245,7 +249,7 @@ LexChat.propTypes = {
 };
 
 LexChat.defaultProps = {
-  alias: "production",
+  alias: "$LATEST",
   headerStyle: {},
   greeting: "",
   sessionAttributes: {},
