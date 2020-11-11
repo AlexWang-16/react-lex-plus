@@ -89,6 +89,11 @@ class LexChat extends React.Component {
         userId: this.state.lexUserId,
         sessionAttributes: this.state.sessionAttributes,
       };
+
+      if (this.props.debugMode === true) {
+        console.log(JSON.stringify(params));
+      }
+
       this.showRequest(inputField);
       var a = function (err, data) {
         if (err) {
@@ -282,7 +287,7 @@ LexChat.propTypes = {
 };
 
 LexChat.defaultProps = {
-  alias: "production",
+  alias: "$LATEST",
   headerStyle: {},
   greeting: "",
   sessionAttributes: {},
