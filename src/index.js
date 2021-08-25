@@ -4,7 +4,7 @@ import merge from "lodash/merge";
 import "aws-sdk";
 import "./styles/chatbot.css";
 
-class LexChat extends Component {
+class LexChat extends React.Component {
   constructor(props) {
     super(props);
 
@@ -83,7 +83,7 @@ class LexChat extends Component {
 
       // send it to the Lex runtime
       var params = {
-        botAlias: this.props.alias,
+        botAlias: props.alias,
         botName: this.props.botName,
         inputText: inputField,
         userId: this.state.lexUserId,
