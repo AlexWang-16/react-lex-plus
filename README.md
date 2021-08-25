@@ -58,7 +58,7 @@ class App extends Component {
       IdentityPoolId="us-east-1:7292b8c0-56f1-4441-b2a6-xxxxxxxxxxxx"
       placeholder="Placeholder text"
       backgroundColor="#FFFFFF"
-      height="430px"
+      height={430}
       region="us-east-1"
       headerText="Chat with our awesome bot"
       headerStyle={{ backgroundColor: "#ABD5D9", fontSize: "30px" }}
