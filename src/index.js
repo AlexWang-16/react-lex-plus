@@ -83,7 +83,7 @@ class LexChat extends React.Component {
 
       // send it to the Lex runtime
       var params = {
-        botAlias: props.alias,
+        botAlias: this.props.alias,
         botName: this.props.botName,
         inputText: inputField,
         userId: this.state.lexUserId,
